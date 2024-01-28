@@ -471,7 +471,7 @@ convert -size 16x16 xc:\#FFFFFF ./assets/minecraft/textures/0.png
 # make sure we crop all mcmeta associated png files
 status_message process "Cropping animated textures"
 for i in $(find ./assets/**/textures -type f -name "*.mcmeta" | sed 's/\.mcmeta//'); do 
-convert ${i} -set option:distort:viewport "%[fx:min(w,h)]x%[fx:min(w,h)]" -distort affine "0,0 0,0" -define png:format=png8 -clamp ${i} 2> /dev/null
+convert ${i} -set option:distort:viewport "%[fx:min(w,h)]x%[fx:min(w,h)]" -distort affine "0,0 0,0" -define png:format=png24 -clamp ${i} 2> /dev/null
 done
 
 status_message completion "Initial pack setup complete\n"
@@ -1027,9 +1027,9 @@ jq -n '["en_US","en_GB"]' | sponge ./target/rp/texts/languages.json
 status_message completion "en_US and en_GB lang files written\n"
 
 # Ensure images are in the correct color space
-status_message process "Setting all images to png8"
-find ./target/rp/textures -name '*.png' -exec mogrify -define png:format=png8  {} +
-status_message completion "All images set to png8"
+status_message process "Setting all images to png24"
+find ./target/rp/textures -name '*.png' -exec mogrify -define png:format=png24  {} +
+status_message completion "All images set to png24"
 
 if [[ ${rename_model_files} == "true" ]]
 then
